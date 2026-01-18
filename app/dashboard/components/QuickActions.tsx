@@ -5,9 +5,13 @@ type ActionItem = {
 
 type QuickActionsProps = {
   actions: ActionItem[];
+  onActionSelect: (title: string) => void;
 };
 
-export default function QuickActions({ actions }: QuickActionsProps) {
+export default function QuickActions({
+  actions,
+  onActionSelect
+}: QuickActionsProps) {
   return (
     <div className="rounded-3xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-xl">
       <h2 className="text-lg font-semibold">Acciones rápidas</h2>
@@ -15,6 +19,7 @@ export default function QuickActions({ actions }: QuickActionsProps) {
         {actions.map((action) => (
           <button
             key={action.title}
+            onClick={() => onActionSelect(action.title)}
             className="w-full rounded-2xl border border-white/15 bg-black/20 px-4 py-4 text-left transition hover:border-white/30 hover:bg-black/30"
           >
             <p className="text-sm font-semibold">{action.title}</p>
