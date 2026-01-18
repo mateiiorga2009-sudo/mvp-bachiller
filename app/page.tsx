@@ -7,7 +7,7 @@ export default function HomePage() {
   const { data: session } = useSession();
 
   return (
-    <section className="flex flex-1 flex-col gap-16">
+    <section className="flex flex-1 flex-col gap-20">
       {/* NAV */}
       <nav className="flex items-center justify-between">
         <div className="text-lg font-semibold tracking-wide text-white">
@@ -24,24 +24,25 @@ export default function HomePage() {
       </nav>
 
       {/* HERO */}
-      <header className="relative overflow-hidden rounded-3xl bg-[url('/hero-bg.png')] bg-cover bg-center px-6 py-16 text-center shadow-2xl md:px-10">
-        <div className="absolute inset-0 bg-black/70" />
-        <div className="relative z-10 space-y-7">
-          <p className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.35em] text-white/70">
+      <header className="relative flex min-h-screen items-center justify-center overflow-hidden rounded-[2.5rem] bg-[url('/hero-bg.png')] bg-cover bg-center px-6 py-16 text-center shadow-2xl">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/65 to-indigo-950/90" />
+        <div className="absolute -top-20 right-10 h-72 w-72 rounded-full bg-indigo-500/30 blur-3xl" />
+        <div className="absolute bottom-10 left-10 h-80 w-80 rounded-full bg-cyan-400/20 blur-3xl" />
+        <div className="relative z-10 w-full max-w-4xl space-y-8 animate-[fadeIn_0.8s_ease-out]">
+          <p className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.35em] text-white/70 backdrop-blur">
             Viralify para creadores
           </p>
           <h1 className="text-4xl font-semibold leading-tight md:text-6xl">
-            Crece más rápido, publica mejor y ahorra horas con{" "}
-            <span className="bg-gradient-to-r from-sky-400 to-indigo-500 bg-clip-text text-transparent">
-              clips virales
+            Haz que cada vídeo tenga{" "}
+            <span className="bg-gradient-to-r from-cyan-300 via-sky-400 to-indigo-500 bg-clip-text text-transparent">
+              potencial viral
             </span>
             .
           </h1>
 
-          <p className="mx-auto max-w-3xl text-base text-white/75 md:text-lg">
-            Viralify detecta los momentos con mayor potencial viral, te entrega
-            hooks ganadores y convierte tu idea en títulos listos para crecer en
-            YouTube Shorts y TikTok.
+          <p className="mx-auto max-w-3xl text-base text-white/80 md:text-lg">
+            Viralify analiza tus vídeos y detecta los momentos exactos que
+            generan retención, clics y crecimiento real en YouTube y TikTok.
           </p>
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -49,18 +50,24 @@ export default function HomePage() {
               <>
                 <Link
                   href="/login"
-                  className="rounded-2xl bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-600 px-10 py-4 text-sm font-semibold text-white shadow-xl shadow-indigo-500/30 transition hover:scale-[1.04]"
+                  className="rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-600 px-10 py-4 text-sm font-semibold text-white shadow-2xl shadow-sky-500/30 transition hover:scale-[1.05]"
                 >
-                  Empieza a crear clips virales
+                  Empieza gratis con Google
                 </Link>
-                <div className="text-xs text-white/65">
+                <Link
+                  href="#como-funciona"
+                  className="rounded-2xl border border-white/20 bg-white/5 px-8 py-4 text-sm font-semibold text-white/80 backdrop-blur transition hover:border-white/40 hover:bg-white/10"
+                >
+                  Ver cómo funciona
+                </Link>
+                <div className="text-xs text-white/60">
                   Gratis para empezar · Login con Google
                 </div>
               </>
             ) : (
               <Link
                 href="/dashboard"
-                className="rounded-2xl bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-600 px-10 py-4 text-sm font-semibold text-white shadow-xl shadow-indigo-500/30 transition hover:scale-[1.04]"
+                className="rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-600 px-10 py-4 text-sm font-semibold text-white shadow-2xl shadow-sky-500/30 transition hover:scale-[1.05]"
               >
                 Ir al dashboard
               </Link>
@@ -69,50 +76,69 @@ export default function HomePage() {
         </div>
       </header>
 
-      <section className="grid gap-4 rounded-3xl border border-white/10 bg-white/5 px-6 py-6 text-center shadow-lg backdrop-blur md:grid-cols-3">
+      {/* SOCIAL PROOF */}
+      <section className="grid gap-4 rounded-3xl border border-white/10 bg-white/5 px-6 py-8 text-center shadow-lg backdrop-blur md:grid-cols-3">
         {[
-          "Creadores usan Viralify para crecer más rápido",
+          "Creadores que ya usan Viralify",
           "Optimizado para YouTube Shorts y TikTok",
-          "Resultados claros sin perder tiempo editando"
+          "Usado por canales de +100K seguidores"
         ].map((item) => (
           <div
             key={item}
-            className="rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white/75 transition hover:bg-black/40"
+            className="rounded-2xl border border-white/20 bg-white/10 px-4 py-4 text-sm text-white/75 backdrop-blur-xl transition hover:bg-white/15"
           >
             {item}
           </div>
         ))}
       </section>
 
-      {/* FEATURES */}
-      <section className="grid gap-6 md:grid-cols-3">
+      {/* BENEFITS */}
+      <section id="como-funciona" className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {[
           {
-            title: "+Views con clips precisos",
-            desc: "Aísla los momentos con mayor retención y repite el patrón."
+            title: "🔥 Momentos virales",
+            desc: "Detecta automáticamente los segundos que más convierten."
           },
           {
-            title: "Hooks que detienen el scroll",
-            desc: "Guiones cortos que capturan atención en 3 segundos."
+            title: "🎯 Hooks optimizados",
+            desc: "Títulos y ganchos diseñados para maximizar clics."
           },
           {
-            title: "Menos edición, más impacto",
-            desc: "Reduce horas de postproducción con decisiones claras."
+            title: "📈 Más retención",
+            desc: "Mejora watch time sin rehacer todo tu contenido."
+          },
+          {
+            title: "⚡ Flujo rápido",
+            desc: "Recorta, publica y crece en minutos."
           }
         ].map((card) => (
           <div
             key={card.title}
-            className="group rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur transition hover:-translate-y-1 hover:shadow-xl"
+            className="group rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur-xl transition hover:-translate-y-1 hover:shadow-2xl"
           >
-            <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/20 bg-black/30 text-sm font-semibold text-white/80 transition group-hover:scale-105">
-                ✦
-              </span>
-              <h3 className="text-lg font-semibold">{card.title}</h3>
-            </div>
+            <h3 className="text-lg font-semibold">{card.title}</h3>
             <p className="mt-3 text-sm text-white/70">{card.desc}</p>
           </div>
         ))}
+      </section>
+
+      {/* FINAL CTA */}
+      <section className="rounded-[2.5rem] border border-white/10 bg-gradient-to-r from-cyan-500/20 via-indigo-500/20 to-purple-600/20 px-8 py-12 text-center shadow-2xl">
+        <h2 className="text-3xl font-semibold md:text-4xl">
+          Deja de subir vídeos al azar. Empieza a subir vídeos virales.
+        </h2>
+        <p className="mx-auto mt-3 max-w-2xl text-sm text-white/75">
+          Viralify te da claridad sobre qué recortar, cómo presentar y cuándo
+          publicar para crecer más rápido.
+        </p>
+        <div className="mt-6 flex justify-center">
+          <Link
+            href={session ? "/dashboard" : "/login"}
+            className="rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-600 px-10 py-4 text-sm font-semibold text-white shadow-2xl shadow-sky-500/30 transition hover:scale-[1.05]"
+          >
+            Entrar al dashboard
+          </Link>
+        </div>
       </section>
     </section>
   );
