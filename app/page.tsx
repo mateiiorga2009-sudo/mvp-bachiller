@@ -1,132 +1,134 @@
 "use client";
 
-import { useState } from "react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import Link from "next/link";
 
-type Flashcard = {
-  question: string;
-  answer: string;
-};
-
-type AiResponse = {
-  summary: string;
-  flashcards: Flashcard[];
-};
-
-const isValidYouTubeUrl = (value: string) => {
-  try {
-    const parsed = new URL(value);
-    const host = parsed.hostname.replace("www.", "").toLowerCase();
-
-    if (host === "youtu.be") return parsed.pathname.length > 1;
-    if (host !== "youtube.com" && host !== "m.youtube.com") return false;
-    return parsed.pathname.startsWith("/watch") && parsed.searchParams.has("v");
-  } catch {
-    return false;
-  }
-};
-
-export default function HomePage() {
-  const [url, setUrl] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<AiResponse | null>(null);
-  const [error, setError] = useState("");
-
-  const handleGenerate = async () => {
-    if (!url.trim()) return setError("Pega un enlace de YouTube para continuar.");
-    if (!isValidYouTubeUrl(url.trim()))
-      return setError("El enlace no parece válido. Usa un enlace de YouTube correcto.");
-
-    setError("");
-    setLoading(true);
-    setData(null);
-
-    try {
-      const response = await fetch("/api/ai", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url }),
-      });
-      if (!response.ok) throw new Error("Respuesta inválida");
-      const payload = (await response.json()) as AiResponse;
-      setData(payload);
-    } catch {
-      setError("Hubo un problema simulando la IA. Intenta nuevamente.");
-    } finally {
-      setLoading(false);
-    }
-  };
+export default async function HomePage() {
+  const session = await getServerSession(authOptions);
 
   return (
-    <main className="flex flex-col items-center justify-start min-h-screen bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 text-white font-inter">
-      {/* Hero Section */}
-      <section className="text-center py-20 px-6 max-w-4xl">
-        <h1 className="text-5xl font-bold mb-4 drop-shadow-lg">
-          Convierte videos de YouTube en resúmenes y flashcards
-        </h1>
-        <p className="text-lg text-white/80 mb-8">
-          Pega el enlace de un video educativo y obtén un resumen claro y tarjetas de estudio listas para repasar.
-        </p>
-        <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-          <input
-            type="text"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://www.youtube.com/watch?v=..."
-            className="w-full md:w-96 px-5 py-3 rounded-full border-2 border-white/50 bg-white/20 placeholder-white/70 focus:outline-none focus:ring-4 focus:ring-pink-400 focus:border-transparent transition"
-          />
-          <button
-            onClick={handleGenerate}
-            disabled={loading}
-            className="rounded-full bg-gradient-to-r from-pink-500 via-purple-600 to-blue-500 px-8 py-3 font-semibold shadow-lg shadow-purple-500/50 hover:scale-105 transition transform disabled:opacity-70"
-          >
-            {loading ? "Generando..." : "Generar"}
-          </button>
+    <section className="flex flex-1 flex-col gap-12">
+      <nav className="flex items-center justify-between">
+        <div className="text-sm font-semibold uppercase tracking-[0.35em] text-white/60">
+          Viralify
         </div>
-        {error && <p className="mt-3 text-amber-300">{error}</p>}
-      </section>
+        <div className="text-lg font-semibold text-white/90">Viralify</div>
+      </nav>
 
-      {/* Result Section */}
-      <section className="grid lg:grid-cols-2 gap-8 px-6 w-full max-w-6xl pb-20">
-        {/* Summary */}
-        <article className="bg-white/10 border border-white/20 rounded-3xl p-6 shadow-lg backdrop-blur-lg">
-          <h2 className="text-2xl font-semibold mb-4">Resumen</h2>
-          {loading ? (
-            <div className="space-y-3 animate-pulse">
-              <div className="h-4 w-4/5 bg-white/30 rounded-full" />
-              <div className="h-4 w-full bg-white/20 rounded-full" />
-              <div className="h-4 w-3/4 bg-white/20 rounded-full" />
-            </div>
+      <header className="space-y-6 text-center">
+        <h1 className="text-4xl font-semibold leading-tight md:text-6xl">
+          Detecta los mejores momentos de tus videos de YouTube y TikTok para
+          maximizar su viralidad.
+        </h1>
+        <p className="mx-auto max-w-2xl text-base text-white/75 md:text-lg">
+          Viralify analiza tu contenido y te sugiere títulos, hooks y
+          descripciones que convierten más. Todo en un panel moderno pensado
+          para creadores ambiciosos.
+        </p>
+        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <Link
+            href="/login"
+            className="rounded-2xl bg-gradient-to-r from-sky-400 via-indigo-500 to-purple-500 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition hover:scale-[1.02]"
+          >
+            Iniciar sesión con Google
+          </Link>
+          {session ? (
+            <Link
+              href="/dashboard"
+              className="rounded-2xl border border-white/30 bg-white/10 px-7 py-3 text-sm font-semibold text-white/90 transition hover:border-white/60 hover:bg-white/20"
+            >
+              Comenzar a crear clips virales
+            </Link>
           ) : (
-            <p className="text-white/80">
-              {data?.summary ?? "Aquí aparecerá un resumen breve con los puntos clave del video."}
-            </p>
-          )}
-        </article>
-
-        {/* Flashcards */}
-        <aside className="bg-white/10 border border-white/20 rounded-3xl p-6 shadow-lg backdrop-blur-lg">
-          <h2 className="text-2xl font-semibold mb-4">Flashcards</h2>
-          {loading ? (
-            <div className="space-y-4 animate-pulse">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="h-20 bg-white/20 rounded-2xl" />
-              ))}
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {(data?.flashcards ?? Array.from({ length: 3 })).map((card, i) => (
-                <div
-                  key={card ? card.question : i}
-                  className="bg-white/20 rounded-2xl p-4 shadow-md transform hover:scale-105 transition"
-                >
-                  <p className="font-semibold">{card?.question ?? `Pregunta ${i + 1}`}</p>
-                  <p className="text-white/80 mt-1">{card?.answer ?? "Respuesta breve."}</p>
-                </div>
-              ))}
+            <div className="flex flex-col items-center gap-2">
+              <button
+                disabled
+                className="cursor-not-allowed rounded-2xl border border-white/20 bg-white/5 px-7 py-3 text-sm font-semibold text-white/60"
+              >
+                Comenzar a crear clips virales
+              </button>
+              <span className="text-xs text-white/60">
+                Inicia sesión para desbloquear el dashboard.
+              </span>
             </div>
           )}
-        </aside>
+        </div>
+      </header>
+
+      <section className="grid gap-6 md:grid-cols-3">
+        {[
+          {
+            title: "Highlights inteligentes",
+            desc: "Detecta los clips que maximizan el watch time."
+          },
+          {
+            title: "Estrategia viral",
+            desc: "Hooks y títulos listos para publicar en segundos."
+          },
+          {
+            title: "Rendimiento SaaS",
+            desc: "KPIs claros y recomendaciones accionables."
+          }
+        ].map((card) => (
+          <div
+            key={card.title}
+            className="rounded-3xl border border-white/15 bg-white/10 p-6 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl backdrop-blur"
+          >
+            <h3 className="text-lg font-semibold">{card.title}</h3>
+            <p className="mt-3 text-sm text-white/75">{card.desc}</p>
+          </div>
+        ))}
       </section>
-    </main>
+
+      <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="rounded-3xl border border-white/15 bg-white/10 p-6 shadow-xl transition hover:shadow-2xl backdrop-blur">
+          <h2 className="text-xl font-semibold">Panel de control</h2>
+          <p className="mt-3 text-white/80">
+            Visualiza la salud de tu canal con métricas esenciales y recibe
+            alertas sobre oportunidades virales.
+          </p>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            {[
+              { label: "Retención promedio", value: "63%" },
+              { label: "Videos destacados", value: "12" },
+              { label: "CTR orgánico", value: "7.4%" },
+              { label: "Ideas generadas", value: "28" }
+            ].map((metric) => (
+              <div
+                key={metric.label}
+                className="rounded-2xl border border-white/10 bg-black/20 p-4 transition hover:-translate-y-0.5 hover:bg-black/30"
+              >
+                <p className="text-xs uppercase tracking-widest text-white/60">
+                  {metric.label}
+                </p>
+                <p className="mt-2 text-2xl font-semibold">{metric.value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="rounded-3xl border border-white/15 bg-white/10 p-6 shadow-xl transition hover:shadow-2xl backdrop-blur">
+          <h2 className="text-xl font-semibold">Flujo creativo</h2>
+          <p className="mt-3 text-white/80">
+            Genera clips virales con un flujo guiado que prioriza velocidad,
+            claridad y resultados.
+          </p>
+          <ul className="mt-6 space-y-4 text-sm text-white/75">
+            {[
+              "Recibe un score de viralidad por video.",
+              "Ajusta el hook con sugerencias instantáneas.",
+              "Planifica tu calendario semanal."
+            ].map((item) => (
+              <li
+                key={item}
+                className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 transition hover:bg-black/30"
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    </section>
   );
 }
