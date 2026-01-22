@@ -25,28 +25,30 @@ export default async function LibraryPage() {
 
   return (
     <section className="space-y-8 animate-panel-in">
-      <header className="rounded-3xl border border-white/15 bg-white/10 p-6 shadow-xl backdrop-blur">
-        <h1 className="text-3xl font-semibold">Biblioteca</h1>
-        <p className="mt-2 text-sm text-white/70">
+      <header className="rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-xl backdrop-blur dark:border-white/15 dark:bg-white/10">
+        <h1 className="text-3xl font-semibold text-slate-900 dark:text-white">
+          Biblioteca
+        </h1>
+        <p className="mt-2 text-sm text-slate-600 dark:text-white/70">
           Guarda templates, guiones y resultados anteriores.
         </p>
       </header>
 
       <div className="grid gap-4 md:grid-cols-2">
         {(data ?? []).length === 0 ? (
-          <div className="rounded-3xl border border-white/15 bg-white/10 p-5 text-sm text-white/70 shadow-xl backdrop-blur">
+          <div className="rounded-3xl border border-slate-200/80 bg-white/90 p-5 text-sm text-slate-600 shadow-xl backdrop-blur dark:border-white/15 dark:bg-white/10 dark:text-white/70">
             Tu biblioteca está vacía. Genera clips para empezar.
           </div>
         ) : (
           data?.map((item) => (
             <div
               key={item.id}
-              className="rounded-3xl border border-white/15 bg-white/10 p-5 shadow-xl backdrop-blur transition hover:-translate-y-1 hover:shadow-2xl"
+              className="rounded-3xl border border-slate-200/80 bg-white/90 p-5 shadow-xl backdrop-blur transition hover:-translate-y-1 hover:shadow-2xl dark:border-white/15 dark:bg-white/10"
             >
-              <p className="text-sm font-semibold">
+              <p className="text-sm font-semibold text-slate-900 dark:text-white">
                 {item.title ?? "Clip generado"}
               </p>
-              <p className="mt-2 text-xs text-white/60">
+              <p className="mt-2 text-xs text-slate-500 dark:text-white/60">
                 Guardado recientemente
               </p>
             </div>
@@ -56,7 +58,7 @@ export default async function LibraryPage() {
 
       <Link
         href="/dashboard"
-        className="inline-flex rounded-2xl border border-white/20 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:border-white/40"
+        className="inline-flex rounded-2xl border border-slate-200/80 bg-white px-4 py-2 text-sm text-slate-700 transition hover:border-slate-300 dark:border-white/20 dark:bg-white/5 dark:text-white/80 dark:hover:border-white/40"
       >
         Volver al dashboard
       </Link>

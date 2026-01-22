@@ -5,11 +5,11 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light dark;
 }
 
 body {
-  @apply text-white antialiased;
+  @apply antialiased;
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 

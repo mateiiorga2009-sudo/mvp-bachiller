@@ -43,8 +43,8 @@ export default function GenerateClient({ onSuccess }: GenerateClientProps) {
   };
 
   return (
-    <div className="rounded-3xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur">
-      <label className="text-sm text-white/80">
+    <div className="rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xl backdrop-blur dark:border-white/20 dark:bg-white/10">
+      <label className="text-sm text-slate-700 dark:text-white/80">
         Enlace de YouTube o TikTok
       </label>
       <div className="mt-2 flex flex-col gap-3 lg:flex-row lg:items-center">
@@ -53,9 +53,9 @@ export default function GenerateClient({ onSuccess }: GenerateClientProps) {
           onChange={(event) => setUrl(event.target.value)}
           type="text"
           placeholder="https://www.youtube.com/watch?v=..."
-          className="w-full flex-1 rounded-2xl border border-white/20 bg-black/30 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-300/40"
+          className="w-full flex-1 rounded-2xl border border-slate-200/80 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-slate-300 focus:outline-none focus:ring-2 focus:ring-cyan-300/40 dark:border-white/20 dark:bg-black/30 dark:text-white dark:placeholder:text-white/50 dark:focus:border-white/50"
         />
-        <label className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/5 px-4 py-3 text-sm text-white/80 transition hover:border-white/40 lg:w-auto">
+        <label className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-slate-200/80 bg-white px-4 py-3 text-sm text-slate-700 transition hover:border-slate-300 dark:border-white/20 dark:bg-white/5 dark:text-white/80 dark:hover:border-white/40 lg:w-auto">
           <input
             type="file"
             accept="video/*"
@@ -69,7 +69,7 @@ export default function GenerateClient({ onSuccess }: GenerateClientProps) {
         </label>
       </div>
       {videoFile && (
-        <p className="mt-2 text-xs text-white/70">
+        <p className="mt-2 text-xs text-slate-600 dark:text-white/70">
           Video seleccionado: {videoFile.name}
         </p>
       )}
@@ -80,7 +80,7 @@ export default function GenerateClient({ onSuccess }: GenerateClientProps) {
       >
         {loading ? "Registrando..." : "Generar clips virales"}
       </button>
-      {error && <p className="mt-3 text-xs text-amber-200">{error}</p>}
+      {error && <p className="mt-3 text-xs text-amber-600 dark:text-amber-200">{error}</p>}
     </div>
   );
 }

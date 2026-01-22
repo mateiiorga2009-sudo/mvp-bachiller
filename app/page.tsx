@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function HomePage() {
   const { data: session } = useSession();
@@ -9,22 +10,17 @@ export default function HomePage() {
   return (
     <section className="flex flex-1 flex-col gap-20 px-6 py-8 sm:px-8 lg:px-12 lg:py-10">
       {/* NAV */}
-      <nav className="flex items-center justify-between">
-        <div className="text-lg font-semibold tracking-wide text-white">
-          Viralify
+      <nav className="flex items-center justify-center">
+        <div className="text-2xl font-semibold tracking-[0.5em] text-slate-900 dark:text-white">
+          VIRAFLY
         </div>
-        {session && (
-          <Link
-            href="/dashboard"
-            className="text-sm font-medium text-white/80 hover:text-white"
-          >
-            Dashboard
-          </Link>
-        )}
+        <div className="absolute right-6 sm:right-8 lg:right-12">
+          <ThemeToggle />
+        </div>
       </nav>
 
       {/* HERO */}
-      <header className="relative flex min-h-screen items-center justify-center overflow-hidden rounded-[2.5rem] bg-[url('/hero-bg.png')] bg-cover bg-center px-6 py-16 text-center shadow-2xl sm:px-10 lg:px-16">
+      <header className="relative flex min-h-screen items-center justify-center overflow-hidden rounded-[2.5rem] bg-[url('/hero-bg.png')] bg-cover bg-center px-6 py-16 text-center text-white shadow-2xl sm:px-10 lg:px-16">
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/65 to-indigo-950/90" />
         <div className="absolute -top-20 right-10 h-72 w-72 rounded-full bg-indigo-500/30 blur-3xl" />
         <div className="absolute bottom-10 left-10 h-80 w-80 rounded-full bg-cyan-400/20 blur-3xl" />
@@ -77,7 +73,7 @@ export default function HomePage() {
       </header>
 
       {/* SOCIAL PROOF */}
-      <section className="grid gap-4 rounded-3xl border border-white/10 bg-white/5 px-6 py-8 text-center shadow-lg backdrop-blur md:grid-cols-3">
+      <section className="grid gap-4 rounded-3xl border border-slate-200/80 bg-white/80 px-6 py-8 text-center shadow-lg backdrop-blur md:grid-cols-3 dark:border-white/10 dark:bg-white/5">
         {[
           "Creadores que ya usan Viralify",
           "Optimizado para YouTube Shorts y TikTok",
@@ -85,7 +81,7 @@ export default function HomePage() {
         ].map((item) => (
           <div
             key={item}
-            className="rounded-2xl border border-white/20 bg-white/10 px-4 py-4 text-sm text-white/75 backdrop-blur-xl transition hover:bg-white/15"
+            className="rounded-2xl border border-slate-200/70 bg-white/90 px-4 py-4 text-sm text-slate-700 backdrop-blur-xl transition hover:bg-white dark:border-white/20 dark:bg-white/10 dark:text-white/75 dark:hover:bg-white/15"
           >
             {item}
           </div>
@@ -93,7 +89,10 @@ export default function HomePage() {
       </section>
 
       {/* BENEFITS */}
-      <section id="como-funciona" className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <section
+        id="como-funciona"
+        className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
+      >
         {[
           {
             title: "🔥 Momentos virales",
@@ -114,20 +113,24 @@ export default function HomePage() {
         ].map((card) => (
           <div
             key={card.title}
-            className="group rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur-xl transition hover:-translate-y-1 hover:shadow-2xl"
+            className="group rounded-3xl border border-slate-200/80 bg-white/90 p-6 backdrop-blur-xl transition hover:-translate-y-1 hover:shadow-2xl dark:border-white/20 dark:bg-white/10"
           >
-            <h3 className="text-lg font-semibold">{card.title}</h3>
-            <p className="mt-3 text-sm text-white/70">{card.desc}</p>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+              {card.title}
+            </h3>
+            <p className="mt-3 text-sm text-slate-600 dark:text-white/70">
+              {card.desc}
+            </p>
           </div>
         ))}
       </section>
 
       {/* FINAL CTA */}
-      <section className="rounded-[2.5rem] border border-white/10 bg-gradient-to-r from-cyan-500/20 via-indigo-500/20 to-purple-600/20 px-8 py-12 text-center shadow-2xl">
-        <h2 className="text-3xl font-semibold md:text-4xl">
+      <section className="rounded-[2.5rem] border border-slate-200/80 bg-gradient-to-r from-cyan-500/20 via-indigo-500/20 to-purple-600/20 px-8 py-12 text-center shadow-2xl dark:border-white/10">
+        <h2 className="text-3xl font-semibold text-slate-900 md:text-4xl dark:text-white">
           Deja de subir vídeos al azar. Empieza a subir vídeos virales.
         </h2>
-        <p className="mx-auto mt-3 max-w-2xl text-sm text-white/75">
+        <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-600 dark:text-white/75">
           Viralify te da claridad sobre qué recortar, cómo presentar y cuándo
           publicar para crecer más rápido.
         </p>
