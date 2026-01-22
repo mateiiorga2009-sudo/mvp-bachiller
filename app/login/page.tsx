@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function LoginPage() {
   return (
-    <section className="flex flex-1 items-center justify-center">
+    <section className="flex h-screen items-center justify-center px-6">
       <div className="w-full max-w-xl rounded-3xl border border-white/20 bg-white/10 p-8 text-center shadow-2xl backdrop-blur">
         <p className="text-xs uppercase tracking-[0.35em] text-white/70">
           Viralify
