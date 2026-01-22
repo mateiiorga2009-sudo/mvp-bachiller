@@ -24,7 +24,7 @@ export default async function LibraryPage() {
     : [];
 
   return (
-    <section className="space-y-8">
+    <section className="space-y-8 animate-panel-in">
       <header className="rounded-3xl border border-white/15 bg-white/10 p-6 shadow-xl backdrop-blur">
         <h1 className="text-3xl font-semibold">Biblioteca</h1>
         <p className="mt-2 text-sm text-white/70">

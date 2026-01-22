@@ -45,7 +45,7 @@ export default function DashboardClient({
         onGenerate={() => setIsGenerateOpen(true)}
       />
 
-      <main className="flex-1 space-y-8 lg:pt-2">
+      <main className="flex-1 space-y-8 lg:pt-2 animate-panel-in">
         <DashboardHeader
           onGenerate={() => setIsGenerateOpen(true)}
           onViewReport={() => navigate("/library")}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type GenerateModalProps = {
   isOpen: boolean;
@@ -17,8 +17,27 @@ export default function GenerateModal({
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isClosing, setIsClosing] = useState(false);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      setIsClosing(false);
+      return;
+    }
+
+    if (shouldRender) {
+      setIsClosing(true);
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+        setIsClosing(false);
+      }, 220);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, shouldRender]);
+
+  if (!shouldRender) return null;
 
   const handleGenerate = async () => {
     if (!url.trim() && !videoFile) {
@@ -52,11 +71,17 @@ export default function GenerateModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
       <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        className={`absolute inset-0 bg-black/70 backdrop-blur-sm ${
+          isClosing ? "animate-modal-out" : "animate-modal-in"
+        }`}
         onClick={onClose}
         aria-hidden="true"
       />
-      <div className="relative z-10 w-full max-w-xl rounded-3xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-xl">
+      <div
+        className={`relative z-10 w-full max-w-xl rounded-3xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-xl ${
+          isClosing ? "animate-modal-out" : "animate-modal-in"
+        }`}
+      >
         <div className="flex items-start justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.35em] text-white/60">
