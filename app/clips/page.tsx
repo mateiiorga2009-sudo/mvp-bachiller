@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth-options";
 import Link from "next/link";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export default async function ClipsPage() {
   const session = await getServerSession(authOptions);
@@ -9,6 +10,14 @@ export default async function ClipsPage() {
   if (!session) {
     redirect("/login");
   }
+
+  const supabase = getSupabaseAdmin();
+  const { data } = await supabase
+    .from("clips")
+    .select("id, title, duration_seconds, created_at")
+    .eq("user_email", session.user.email)
+    .order("created_at", { ascending: false })
+    .limit(8);
 
   return (
     <section className="space-y-8">
@@ -20,18 +29,25 @@ export default async function ClipsPage() {
       </header>
 
       <div className="grid gap-4 md:grid-cols-2">
-        {["Hook explosivo", "Retención máxima", "CTA viral", "Momento clave"].map(
-          (item) => (
+        {(data ?? []).length === 0 ? (
+          <div className="rounded-3xl border border-white/15 bg-white/10 p-5 text-sm text-white/70 shadow-xl backdrop-blur">
+            Aún no tienes clips generados. Empieza creando uno desde el
+            dashboard.
+          </div>
+        ) : (
+          data?.map((clip) => (
             <div
-              key={item}
+              key={clip.id}
               className="rounded-3xl border border-white/15 bg-white/10 p-5 shadow-xl backdrop-blur transition hover:-translate-y-1 hover:shadow-2xl"
             >
-              <p className="text-sm font-semibold">{item}</p>
+              <p className="text-sm font-semibold">
+                {clip.title ?? "Clip generado"}
+              </p>
               <p className="mt-2 text-xs text-white/60">
-                Segmento detectado · 12-18s
+                Duración estimada · {clip.duration_seconds ?? 0}s
               </p>
             </div>
-          )
+          ))
         )}
       </div>
 

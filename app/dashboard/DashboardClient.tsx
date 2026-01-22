@@ -13,21 +13,18 @@ import StatsGrid from "./components/StatsGrid";
 type DashboardClientProps = {
   userName: string;
   userEmail: string;
+  stats: { label: string; value: string; trend: string }[];
+  performance: number[];
 };
 
 export default function DashboardClient({
   userName,
-  userEmail
+  userEmail,
+  stats,
+  performance
 }: DashboardClientProps) {
   const router = useRouter();
   const [isGenerateOpen, setIsGenerateOpen] = useState(false);
-
-  const stats = [
-    { label: "Retención promedio", value: "62%", trend: "+6%" },
-    { label: "CTR estimado", value: "7.4%", trend: "+1.2%" },
-    { label: "Clips sugeridos", value: "18", trend: "+4" },
-    { label: "Tiempo ahorrado", value: "6.3h", trend: "+2.1h" }
-  ];
 
   const actions = [
     { title: "Analizar nuevo video", desc: "Pega un link y detecta clips." },
@@ -35,14 +32,12 @@ export default function DashboardClient({
     { title: "Optimizar título", desc: "Mejora CTR en segundos." }
   ];
 
-  const performance = [32, 45, 38, 52, 60, 48, 70];
-
   const navigate = (path: string) => {
     router.push(path);
   };
 
   return (
-    <div className="flex min-h-[80vh] flex-col gap-8 lg:flex-row">
+    <div className="flex min-h-[80vh] flex-col gap-8 px-6 py-8 sm:px-8 lg:flex-row lg:px-12 lg:py-10">
       <Sidebar
         userName={userName}
         userEmail={userEmail}
@@ -50,7 +45,7 @@ export default function DashboardClient({
         onGenerate={() => setIsGenerateOpen(true)}
       />
 
-      <main className="flex-1 space-y-8">
+      <main className="flex-1 space-y-8 lg:pt-2">
         <DashboardHeader
           onGenerate={() => setIsGenerateOpen(true)}
           onViewReport={() => navigate("/library")}
@@ -59,7 +54,10 @@ export default function DashboardClient({
 
         <section className="grid gap-6 lg:grid-cols-[1.3fr_0.7fr]">
           <PerformanceChart values={performance} />
-          <QuickActions actions={actions} onActionSelect={() => navigate("/generate")} />
+          <QuickActions
+            actions={actions}
+            onActionSelect={() => navigate("/generate")}
+          />
         </section>
 
         <PrimaryCta onConnect={() => navigate("/generate")} />

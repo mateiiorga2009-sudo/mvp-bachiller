@@ -21,7 +21,9 @@ export default function StatsGrid({ stats }: StatsGridProps) {
           </p>
           <p className="mt-3 text-3xl font-semibold">{stat.value}</p>
           <p className="mt-2 text-xs text-emerald-300">
-            {stat.trend} esta semana
+            {stat.trend === "sin datos"
+              ? "Sin datos suficientes"
+              : `${stat.trend} esta semana`}
           </p>
         </div>
       ))}
