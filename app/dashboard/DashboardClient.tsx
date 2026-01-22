@@ -37,7 +37,7 @@ export default function DashboardClient({
   };
 
   return (
-    <div className="flex min-h-[80vh] flex-col gap-8 px-6 py-8 sm:px-8 lg:flex-row lg:px-12 lg:py-10">
+    <div className="flex min-h-[80vh] flex-col gap-6 px-6 py-8 sm:gap-10 sm:px-8 lg:flex-row lg:px-12 lg:py-10">
       <Sidebar
         userName={userName}
         userEmail={userEmail}

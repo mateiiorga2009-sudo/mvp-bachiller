@@ -2,8 +2,18 @@
 
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
+  const searchParams = useSearchParams();
+  const errorParam = searchParams.get("error");
+  const errorMessage =
+    errorParam === "OAuthAccountNotLinked"
+      ? "Este correo ya está asociado a otra cuenta."
+      : errorParam
+        ? "Error al iniciar sesión con Google. Inténtalo nuevamente."
+        : "";
+
   return (
     <section className="flex h-screen items-center justify-center px-6">
       <div className="w-full max-w-xl rounded-3xl border border-slate-200/80 bg-white/90 p-8 text-center shadow-2xl backdrop-blur dark:border-white/20 dark:bg-white/10">
@@ -23,6 +33,11 @@ export default function LoginPage() {
         >
           Continuar con Google
         </button>
+        {errorMessage && (
+          <p className="mt-4 text-sm text-amber-600 dark:text-amber-200">
+            {errorMessage}
+          </p>
+        )}
         <Link
           href="/"
           className="mt-6 inline-flex text-sm text-slate-600 hover:text-slate-900 dark:text-white/70 dark:hover:text-white"

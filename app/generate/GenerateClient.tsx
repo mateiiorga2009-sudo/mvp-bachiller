@@ -12,9 +12,23 @@ export default function GenerateClient({ onSuccess }: GenerateClientProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async () => {
+  const validateInput = () => {
     if (!url.trim() && !videoFile) {
-      setError("Pega un enlace o sube un video para continuar.");
+      return "Pega un enlace o sube un video para continuar.";
+    }
+    if (url.trim() && !url.includes("http")) {
+      return "No se pudo generar el clip: enlace inválido.";
+    }
+    if (videoFile && !videoFile.type.startsWith("video/")) {
+      return "Error al subir el video: formato no soportado.";
+    }
+    return "";
+  };
+
+  const handleSubmit = async () => {
+    const validationError = validateInput();
+    if (validationError) {
+      setError(validationError);
       return;
     }
 
@@ -36,7 +50,7 @@ export default function GenerateClient({ onSuccess }: GenerateClientProps) {
       setVideoFile(null);
       onSuccess?.();
     } catch (err) {
-      setError("No pudimos registrar tu acción. Intenta nuevamente.");
+      setError("Error de conexión, inténtalo de nuevo.");
     } finally {
       setLoading(false);
     }
@@ -63,6 +77,11 @@ export default function GenerateClient({ onSuccess }: GenerateClientProps) {
             onChange={(event) => {
               const file = event.target.files?.[0] ?? null;
               setVideoFile(file);
+              if (file && !file.type.startsWith("video/")) {
+                setError("Error al subir el video: formato no soportado.");
+              } else {
+                setError("");
+              }
             }}
           />
           Subir video

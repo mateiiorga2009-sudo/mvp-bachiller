@@ -10,11 +10,11 @@ export default function HomePage() {
   return (
     <section className="flex flex-1 flex-col gap-20 px-6 py-8 sm:px-8 lg:px-12 lg:py-10">
       {/* NAV */}
-      <nav className="flex items-center justify-center">
-        <div className="text-2xl font-semibold tracking-[0.5em] text-slate-900 dark:text-white">
+      <nav className="relative flex items-center justify-center">
+        <div className="text-xl font-semibold tracking-[0.5em] text-slate-900 dark:text-white sm:text-2xl">
           VIRAFLY
         </div>
-        <div className="absolute right-6 sm:right-8 lg:right-12">
+        <div className="absolute right-0">
           <ThemeToggle />
         </div>
       </nav>
@@ -41,18 +41,18 @@ export default function HomePage() {
             generan retención, clics y crecimiento real en YouTube y TikTok.
           </p>
 
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="flex w-full flex-col items-center justify-center gap-4 sm:flex-row">
             {!session ? (
               <>
                 <Link
                   href="/login"
-                  className="rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-600 px-10 py-4 text-sm font-semibold text-white shadow-2xl shadow-sky-500/30 transition hover:scale-[1.05]"
+                  className="w-full rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-600 px-8 py-4 text-sm font-semibold text-white shadow-2xl shadow-sky-500/30 transition hover:scale-[1.03] sm:w-auto sm:px-10"
                 >
                   Empieza gratis con Google
                 </Link>
                 <Link
                   href="#como-funciona"
-                  className="rounded-2xl border border-white/20 bg-white/5 px-8 py-4 text-sm font-semibold text-white/80 backdrop-blur transition hover:border-white/40 hover:bg-white/10"
+                  className="w-full rounded-2xl border border-white/20 bg-white/5 px-8 py-4 text-sm font-semibold text-white/80 backdrop-blur transition hover:border-white/40 hover:bg-white/10 sm:w-auto"
                 >
                   Ver cómo funciona
                 </Link>
@@ -63,7 +63,7 @@ export default function HomePage() {
             ) : (
               <Link
                 href="/dashboard"
-                className="rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-600 px-10 py-4 text-sm font-semibold text-white shadow-2xl shadow-sky-500/30 transition hover:scale-[1.05]"
+                className="w-full rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-600 px-8 py-4 text-sm font-semibold text-white shadow-2xl shadow-sky-500/30 transition hover:scale-[1.03] sm:w-auto sm:px-10"
               >
                 Ir al dashboard
               </Link>

@@ -44,6 +44,14 @@ export default function GenerateModal({
       setError("Pega un enlace o sube un video para continuar.");
       return;
     }
+    if (url.trim() && !url.includes("http")) {
+      setError("No se pudo generar el clip: enlace inválido.");
+      return;
+    }
+    if (videoFile && !videoFile.type.startsWith("video/")) {
+      setError("Error al subir el video: formato no soportado.");
+      return;
+    }
 
     setLoading(true);
     setError("");
@@ -62,14 +70,14 @@ export default function GenerateModal({
       setVideoFile(null);
       onGoToGenerate();
     } catch (err) {
-      setError("No pudimos registrar tu acción. Intenta nuevamente.");
+      setError("Error de conexión, inténtalo de nuevo.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 sm:px-6">
       <div
         className={`absolute inset-0 bg-black/70 backdrop-blur-sm ${
           isClosing ? "animate-modal-out" : "animate-modal-in"
@@ -78,7 +86,7 @@ export default function GenerateModal({
         aria-hidden="true"
       />
       <div
-        className={`relative z-10 w-full max-w-xl rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xl backdrop-blur-xl dark:border-white/20 dark:bg-white/10 ${
+        className={`relative z-10 w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xl backdrop-blur-xl dark:border-white/20 dark:bg-white/10 ${
           isClosing ? "animate-modal-out" : "animate-modal-in"
         }`}
       >
@@ -123,6 +131,11 @@ export default function GenerateModal({
                 onChange={(event) => {
                   const file = event.target.files?.[0] ?? null;
                   setVideoFile(file);
+                  if (file && !file.type.startsWith("video/")) {
+                    setError("Error al subir el video: formato no soportado.");
+                  } else {
+                    setError("");
+                  }
                 }}
               />
               Subir video
