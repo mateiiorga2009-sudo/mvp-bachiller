@@ -7,15 +7,16 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 export default async function LibraryPage() {
   const session = await getServerSession(authOptions);
 
-  if (!session) {
+  if (!session?.user?.email) {
     redirect("/login");
   }
 
+  const userEmail = session.user.email;
   const supabase = getSupabaseAdmin();
   const { data } = await supabase
     .from("clips")
     .select("id, title, created_at")
-    .eq("user_email", session.user.email)
+    .eq("user_email", userEmail)
     .order("created_at", { ascending: false })
     .limit(6);
 
