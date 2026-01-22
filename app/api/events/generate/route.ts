@@ -1,13 +1,17 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
-import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase-admin";
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (!isSupabaseConfigured()) {
+    return NextResponse.json({ success: true });
   }
 
   const { url } = await request.json().catch(() => ({ url: "" }));

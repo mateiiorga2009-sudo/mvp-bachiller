@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth-options";
 import Link from "next/link";
-import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase-admin";
 
 export default async function ClipsPage() {
   const session = await getServerSession(authOptions);
@@ -12,13 +12,16 @@ export default async function ClipsPage() {
   }
 
   const userEmail = session.user.email;
-  const supabase = getSupabaseAdmin();
-  const { data } = await supabase
-    .from("clips")
-    .select("id, title, duration_seconds, created_at")
-    .eq("user_email", userEmail)
-    .order("created_at", { ascending: false })
-    .limit(8);
+  const data = isSupabaseConfigured()
+    ? (
+        await getSupabaseAdmin()
+          .from("clips")
+          .select("id, title, duration_seconds, created_at")
+          .eq("user_email", userEmail)
+          .order("created_at", { ascending: false })
+          .limit(8)
+      ).data
+    : [];
 
   return (
     <section className="space-y-8">

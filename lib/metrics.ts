@@ -1,4 +1,4 @@
-import { getSupabaseAdmin } from "./supabase-admin";
+import { getSupabaseAdmin, isSupabaseConfigured } from "./supabase-admin";
 
 export type DashboardStat = {
   label: string;
@@ -20,6 +20,15 @@ const formatHours = (seconds: number) => `${(seconds / 3600).toFixed(1)}h`;
 export const getDashboardStats = async (
   userEmail: string
 ): Promise<DashboardStat[]> => {
+  if (!isSupabaseConfigured()) {
+    return [
+      { label: "Retención promedio", value: "0.0%", trend: "sin datos" },
+      { label: "CTR estimado", value: "0.0%", trend: "sin datos" },
+      { label: "Clips sugeridos", value: "0", trend: "sin datos" },
+      { label: "Tiempo ahorrado", value: "0.0h", trend: "sin datos" }
+    ];
+  }
+
   const supabase = getSupabaseAdmin();
   const { data, error } = await supabase
     .from("clips")
@@ -86,6 +95,10 @@ export const getDashboardStats = async (
 export const getPerformanceSeries = async (
   userEmail: string
 ): Promise<number[]> => {
+  if (!isSupabaseConfigured()) {
+    return [12, 16, 20, 18, 22, 24, 20];
+  }
+
   const supabase = getSupabaseAdmin();
   const { data, error } = await supabase
     .from("clips")
