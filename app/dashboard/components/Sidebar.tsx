@@ -27,7 +27,7 @@ export default function Sidebar({
     <aside className="flex w-full flex-col gap-6 rounded-3xl border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur lg:w-72 lg:sticky lg:top-8 lg:h-[calc(100vh-6rem)]">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-white/60">
+          <p className="text-sm font-semibold uppercase tracking-[0.5em] text-white drop-shadow-[0_0_12px_rgba(56,189,248,0.45)]">
             Viralify
           </p>
           <p className="mt-2 text-lg font-semibold">{userName}</p>
