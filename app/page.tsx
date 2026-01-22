@@ -7,7 +7,7 @@ export default function HomePage() {
   const { data: session } = useSession();
 
   return (
-    <section className="flex flex-1 flex-col gap-20">
+    <section className="flex flex-1 flex-col gap-20 px-6 py-8 sm:px-8 lg:px-12 lg:py-10">
       {/* NAV */}
       <nav className="flex items-center justify-between">
         <div className="text-lg font-semibold tracking-wide text-white">
@@ -24,7 +24,7 @@ export default function HomePage() {
       </nav>
 
       {/* HERO */}
-      <header className="relative flex min-h-screen items-center justify-center overflow-hidden rounded-[2.5rem] bg-[url('/hero-bg.png')] bg-cover bg-center px-6 py-16 text-center shadow-2xl">
+      <header className="relative flex min-h-screen items-center justify-center overflow-hidden rounded-[2.5rem] bg-[url('/hero-bg.png')] bg-cover bg-center px-6 py-16 text-center shadow-2xl sm:px-10 lg:px-16">
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/65 to-indigo-950/90" />
         <div className="absolute -top-20 right-10 h-72 w-72 rounded-full bg-indigo-500/30 blur-3xl" />
         <div className="absolute bottom-10 left-10 h-80 w-80 rounded-full bg-cyan-400/20 blur-3xl" />
