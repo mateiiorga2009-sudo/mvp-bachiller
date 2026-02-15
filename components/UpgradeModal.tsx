@@ -4,12 +4,16 @@ type UpgradeModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onUpgrade: () => void;
+  isLoading?: boolean;
+  error?: string;
 };
 
 export default function UpgradeModal({
   isOpen,
   onClose,
-  onUpgrade
+  onUpgrade,
+  isLoading = false,
+  error
 }: UpgradeModalProps) {
   if (!isOpen) return null;
 
@@ -93,9 +97,10 @@ export default function UpgradeModal({
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <button
             onClick={onUpgrade}
-            className="w-full rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-xl transition hover:scale-[1.02]"
+            disabled={isLoading}
+            className="w-full rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-xl transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-70"
           >
-            Confirmar upgrade
+            {isLoading ? "Redirigiendo..." : "Confirmar upgrade"}
           </button>
           <button
             onClick={onClose}
@@ -104,6 +109,9 @@ export default function UpgradeModal({
             Seguir como Free
           </button>
         </div>
+        {error && (
+          <p className="mt-4 text-xs text-amber-200">{error}</p>
+        )}
       </div>
     </div>
   );

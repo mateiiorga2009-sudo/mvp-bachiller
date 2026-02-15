@@ -30,6 +30,8 @@ export default function DashboardClient({
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
   const [hasConnectedChannel, setHasConnectedChannel] = useState(false);
   const [isPro, setIsPro] = useState(false);
+  const [isUpgrading, setIsUpgrading] = useState(false);
+  const [upgradeError, setUpgradeError] = useState("");
 
   useEffect(() => {
     const stored = window.localStorage.getItem("hasConnectedChannel");
@@ -54,6 +56,34 @@ export default function DashboardClient({
 
   const navigate = (path: string) => {
     router.push(path);
+  };
+
+  const handleUpgrade = async () => {
+    setIsUpgrading(true);
+    setUpgradeError("");
+    try {
+      const priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID;
+      if (!priceId) {
+        throw new Error("Price ID no configurado.");
+      }
+
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceId })
+      });
+      const data = (await response.json()) as { url?: string; error?: string };
+      if (!response.ok || !data.url) {
+        throw new Error(data.error ?? "No se pudo iniciar el pago.");
+      }
+      window.location.href = data.url;
+    } catch (err) {
+      setUpgradeError(
+        "No se pudo iniciar Stripe Checkout. Inténtalo nuevamente."
+      );
+    } finally {
+      setIsUpgrading(false);
+    }
   };
 
   return (
@@ -220,7 +250,9 @@ export default function DashboardClient({
       <UpgradeModal
         isOpen={isUpgradeOpen}
         onClose={() => setIsUpgradeOpen(false)}
-        onUpgrade={() => navigate("/pricing")}
+        onUpgrade={handleUpgrade}
+        isLoading={isUpgrading}
+        error={upgradeError}
       />
     </div>
   );
