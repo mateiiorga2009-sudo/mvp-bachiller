@@ -62,15 +62,9 @@ export default function DashboardClient({
     setIsUpgrading(true);
     setUpgradeError("");
     try {
-      const priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID;
-      if (!priceId) {
-        throw new Error("Price ID no configurado.");
-      }
-
       const response = await fetch("/api/checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId })
+        headers: { "Content-Type": "application/json" }
       });
       const data = (await response.json()) as { url?: string; error?: string };
       if (!response.ok || !data.url) {

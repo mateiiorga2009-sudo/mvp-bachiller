@@ -3,7 +3,9 @@ import Stripe from "stripe";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
 
-export async function POST(request: Request) {
+const PRICE_ID = "price_1T17Ul0m3UmkDm1nWCDnl7NY";
+
+export async function POST() {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
@@ -11,12 +13,7 @@ export async function POST(request: Request) {
   }
 
   const secretKey = process.env.STRIPE_SECRET_KEY;
-  const baseUrl = process.env.NEXTAUTH_URL ?? request.headers.get("origin") ?? "";
-  const { priceId } = await request.json().catch(() => ({ priceId: "" }));
-
-  if (!priceId) {
-    return NextResponse.json({ error: "Missing priceId" }, { status: 400 });
-  }
+  const baseUrl = process.env.NEXTAUTH_URL ?? "";
 
   if (!secretKey || !baseUrl) {
     return NextResponse.json(
@@ -30,7 +27,7 @@ export async function POST(request: Request) {
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: "subscription",
     payment_method_types: ["card"],
-    line_items: [{ price: priceId, quantity: 1 }],
+    line_items: [{ price: PRICE_ID, quantity: 1 }],
     customer_email: session.user.email,
     success_url: `${baseUrl}/dashboard?success=true`,
     cancel_url: `${baseUrl}/dashboard`
