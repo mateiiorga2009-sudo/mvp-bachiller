@@ -31,7 +31,7 @@ export default function ConnectClient() {
         </p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div id="integraciones" className="grid gap-6 lg:grid-cols-2">
         {[
           { name: "YouTube", icon: "▶️" },
           { name: "TikTok", icon: "🎵" }

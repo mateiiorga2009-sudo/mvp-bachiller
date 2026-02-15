@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth-options";
 import Link from "next/link";
 import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase-admin";
+import PrimaryCallout from "@/components/PrimaryCallout";
 
 export default async function ClipsPage() {
   const session = await getServerSession(authOptions);
@@ -44,6 +45,14 @@ export default async function ClipsPage() {
           Revisa, edita y publica los recortes con mayor potencial viral.
         </p>
       </header>
+
+        <PrimaryCallout
+          title="Revisa y publica tus mejores clips"
+          description="Selecciona los clips listos, optimiza el título y publica con un solo paso."
+          ctaLabel="Generar clips"
+          ctaHref="/generate"
+          icon="🚀"
+        />
 
       {(clips ?? []).length === 0 ? (
         <section className="rounded-3xl border border-slate-200/80 bg-white/90 p-10 text-center shadow-2xl backdrop-blur-xl dark:border-white/20 dark:bg-white/10">

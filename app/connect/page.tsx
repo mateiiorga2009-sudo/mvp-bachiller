@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth-options";
 import Link from "next/link";
 import ConnectClient from "./ConnectClient";
+import PrimaryCallout from "@/components/PrimaryCallout";
 
 export default async function ConnectPage() {
   const session = await getServerSession(authOptions);
@@ -26,6 +27,14 @@ export default async function ConnectPage() {
           un solo lugar.
         </p>
       </header>
+
+        <PrimaryCallout
+          title="Conecta tu primer canal"
+          description="Autoriza YouTube o TikTok para activar generación y publicación automática."
+          ctaLabel="Conectar canal"
+          ctaHref="#integraciones"
+          icon="🔌"
+        />
 
       <div className="grid gap-4 md:grid-cols-3">
         {[

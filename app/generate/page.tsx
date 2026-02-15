@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth-options";
 import Link from "next/link";
 import GenerateClient from "./GenerateClient";
+import PrimaryCallout from "@/components/PrimaryCallout";
 
 export default async function GeneratePage() {
   const session = await getServerSession(authOptions);
@@ -27,6 +28,14 @@ export default async function GeneratePage() {
         </p>
       </header>
 
+        <PrimaryCallout
+          title="Sube un video para empezar"
+          description="Añade tu enlace o archivo y deja que Viralify prepare los clips más virales."
+          ctaLabel="Ir al formulario"
+          ctaHref="#form-generar"
+          icon="🎯"
+        />
+
       <div className="grid gap-4 md:grid-cols-3">
         {[
           "Sube tu video o enlace",
@@ -46,7 +55,9 @@ export default async function GeneratePage() {
       </div>
 
       <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-        <GenerateClient />
+        <div id="form-generar">
+          <GenerateClient />
+        </div>
         <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-6 shadow-lg backdrop-blur-xl dark:border-white/20 dark:bg-white/10">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
             Checklist de publicación

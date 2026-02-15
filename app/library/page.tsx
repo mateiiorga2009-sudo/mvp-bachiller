@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth-options";
 import Link from "next/link";
 import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase-admin";
+import PrimaryCallout from "@/components/PrimaryCallout";
 
 export default async function LibraryPage() {
   const session = await getServerSession(authOptions);
@@ -68,6 +69,14 @@ export default async function LibraryPage() {
           </div>
         </div>
       </header>
+
+        <PrimaryCallout
+          title="Organiza tu biblioteca de clips"
+          description="Busca, filtra y prioriza los clips con mayor potencial para publicar primero."
+          ctaLabel="Generar primer clip"
+          ctaHref="/generate"
+          icon="📚"
+        />
 
       {(clips ?? []).length === 0 ? (
         <section className="rounded-3xl border border-slate-200/80 bg-white/90 p-10 text-center shadow-2xl backdrop-blur-xl dark:border-white/20 dark:bg-white/10">
