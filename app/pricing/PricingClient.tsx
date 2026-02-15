@@ -10,7 +10,7 @@ export default function PricingClient() {
     setLoading(true);
     setError("");
     try {
-      const priceId = "price_1T17Ul0m3UmkDm1nWCDnl7NY";
+      const priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID;
       if (!priceId) {
         throw new Error("Price ID no configurado.");
       }
