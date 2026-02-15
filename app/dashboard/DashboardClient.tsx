@@ -62,9 +62,7 @@ export default function DashboardClient({
     setIsUpgrading(true);
     setUpgradeError("");
     try {
-      const priceId =
-        process.env.NEXT_PUBLIC_STRIPE_PRICE_ID ??
-        "price_1T17Ul0m3UmkDm1nWCDnl7NY";
+      const priceId = "price_1T17Ul0m3UmkDm1nWCDnl7NY";
       if (!priceId) {
         throw new Error("Price ID no configurado.");
       }
