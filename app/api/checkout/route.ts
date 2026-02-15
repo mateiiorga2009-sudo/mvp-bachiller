@@ -3,9 +3,7 @@ import Stripe from "stripe";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
 
-const PRICE_ID = "price_1T17Ul0m3UmkDm1nWCDnl7NY";
-
-export async function POST() {
+export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
@@ -14,8 +12,9 @@ export async function POST() {
 
   const secretKey = process.env.STRIPE_SECRET_KEY;
   const baseUrl = process.env.NEXTAUTH_URL ?? "";
+  const { priceId } = await request.json().catch(() => ({ priceId: "" }));
 
-  if (!secretKey || !baseUrl) {
+  if (!secretKey || !baseUrl || !priceId) {
     return NextResponse.json(
       { error: "Stripe is not configured" },
       { status: 500 }
@@ -27,7 +26,7 @@ export async function POST() {
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: "subscription",
     payment_method_types: ["card"],
-    line_items: [{ price: PRICE_ID, quantity: 1 }],
+    line_items: [{ price: priceId, quantity: 1 }],
     customer_email: session.user.email,
     success_url: `${baseUrl}/dashboard?success=true`,
     cancel_url: `${baseUrl}/dashboard`

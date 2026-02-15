@@ -10,7 +10,16 @@ export default function PricingClient() {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("/api/checkout", { method: "POST" });
+      const priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID;
+      if (!priceId) {
+        throw new Error("Price ID no configurado.");
+      }
+
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceId })
+      });
       const data = (await response.json()) as { url?: string; error?: string };
       if (!response.ok || !data.url) {
         throw new Error(data.error ?? "No se pudo iniciar el pago.");
