@@ -25,33 +25,77 @@ export default function PricingClient() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-2">
-      <div className="rounded-3xl border border-slate-200/80 bg-white/90 p-8 shadow-xl backdrop-blur-xl dark:border-white/20 dark:bg-white/10">
+      <div className="rounded-3xl border border-slate-200/60 bg-white/85 p-8 shadow-lg backdrop-blur-xl dark:border-white/15 dark:bg-white/10">
         <h3 className="text-xl font-semibold text-slate-900 dark:text-white">
           Free
         </h3>
         <p className="mt-2 text-sm text-slate-600 dark:text-white/70">
-          Sube hasta 3 vídeos al mes. Watermark activado. Publicación manual.
+          Free es genial para probar, pero algunas funciones avanzadas solo
+          están en Pro.
         </p>
+        <ol className="mt-4 space-y-3 text-sm text-slate-600 dark:text-white/70">
+          <li className="flex items-start gap-3">
+            <span>1.</span>
+            <span>Subida manual de vídeos</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span>2.</span>
+            <span>Hasta 3 vídeos/mes</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span>3.</span>
+            <span>Watermark activado</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span>4.</span>
+            <span>Acceso a análisis básico</span>
+          </li>
+        </ol>
         <button className="mt-6 w-full rounded-2xl border border-slate-200/80 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:border-white/40">
           Plan actual
         </button>
       </div>
 
-      <div className="relative rounded-3xl border border-indigo-400/40 bg-gradient-to-r from-indigo-500/15 via-purple-500/15 to-sky-500/15 p-8 shadow-2xl ring-1 ring-indigo-400/30 backdrop-blur-xl">
+      <div className="relative rounded-3xl border border-indigo-400/50 bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-sky-500/20 p-8 shadow-2xl ring-2 ring-indigo-400/30 backdrop-blur-xl">
         <div className="absolute -top-4 right-6 rounded-full bg-indigo-500 px-3 py-1 text-xs font-semibold text-white">
           Recomendado
         </div>
         <h3 className="text-xl font-semibold text-white">Pro</h3>
         <p className="mt-2 text-sm text-white/80">
-          Clips ilimitados. Sin watermark. Publicación automática. Badge Pro
-          visible.
+          Pro: desbloquea todo y publica automáticamente tus vídeos virales.
         </p>
+        <ol className="mt-4 space-y-3 text-sm text-white/85">
+          <li className="flex items-start gap-3">
+            <span>1.</span>
+            <span>Clips ilimitados</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span>2.</span>
+            <span>Publicación automática a YouTube / TikTok</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span>3.</span>
+            <span>Sin watermark</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span>4.</span>
+            <span>Badge Pro visible</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span>5.</span>
+            <span>Análisis avanzado de viralidad</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span>6.</span>
+            <span>Prioridad en generación de clips</span>
+          </li>
+        </ol>
         <button
           onClick={handleCheckout}
           disabled={loading}
           className="mt-6 w-full rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
         >
-          {loading ? "Redirigiendo..." : "Pasar a Pro"}
+          {loading ? "Redirigiendo..." : "Sube a Pro ahora"}
         </button>
         {error && <p className="mt-3 text-xs text-amber-200">{error}</p>}
       </div>
