@@ -9,6 +9,7 @@ import PrimaryCta from "./components/PrimaryCta";
 import QuickActions from "./components/QuickActions";
 import Sidebar from "./components/Sidebar";
 import StatsGrid from "./components/StatsGrid";
+import UpgradeModal from "@/components/UpgradeModal";
 
 type DashboardClientProps = {
   userName: string;
@@ -25,11 +26,15 @@ export default function DashboardClient({
 }: DashboardClientProps) {
   const router = useRouter();
   const [isGenerateOpen, setIsGenerateOpen] = useState(false);
+  const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
   const [hasConnectedChannel, setHasConnectedChannel] = useState(false);
+  const [isPro, setIsPro] = useState(false);
 
   useEffect(() => {
     const stored = window.localStorage.getItem("hasConnectedChannel");
     setHasConnectedChannel(stored === "true");
+    const proStored = window.localStorage.getItem("isPro");
+    setIsPro(proStored === "true");
   }, []);
 
   const actions = [
@@ -50,6 +55,7 @@ export default function DashboardClient({
         onNavigate={navigate}
         onGenerate={() => hasConnectedChannel && setIsGenerateOpen(true)}
         hasConnectedChannel={hasConnectedChannel}
+        isPro={isPro}
       />
 
       <main className="flex-1 space-y-8 lg:pt-2 animate-panel-in">
@@ -142,8 +148,8 @@ export default function DashboardClient({
                   ✨
                 </div>
               </div>
-              <button
-                onClick={() => hasConnectedChannel && setIsGenerateOpen(true)}
+            <button
+              onClick={() => hasConnectedChannel && setIsGenerateOpen(true)}
                 disabled={!hasConnectedChannel}
                 className="mt-6 w-full rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-xl transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
               >
@@ -177,7 +183,7 @@ export default function DashboardClient({
               </div>
             </div>
             <button
-              onClick={() => navigate("/library")}
+              onClick={() => (isPro ? navigate("/library") : setIsUpgradeOpen(true))}
               className="mt-6 w-full rounded-2xl border border-slate-200/80 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:border-white/40 dark:hover:bg-white/20"
             >
               Ver plan de publicación
@@ -201,6 +207,11 @@ export default function DashboardClient({
         isOpen={isGenerateOpen}
         onClose={() => setIsGenerateOpen(false)}
         onGoToGenerate={() => navigate("/generate")}
+      />
+      <UpgradeModal
+        isOpen={isUpgradeOpen}
+        onClose={() => setIsUpgradeOpen(false)}
+        onUpgrade={() => navigate("/pricing")}
       />
     </div>
   );

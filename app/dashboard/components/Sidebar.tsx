@@ -9,6 +9,7 @@ type SidebarProps = {
   onNavigate: (path: string) => void;
   onGenerate: () => void;
   hasConnectedChannel: boolean;
+  isPro: boolean;
 };
 
 const navItems = [
@@ -24,7 +25,8 @@ export default function Sidebar({
   userEmail,
   onNavigate,
   onGenerate,
-  hasConnectedChannel
+  hasConnectedChannel,
+  isPro
 }: SidebarProps) {
   return (
     <aside className="flex w-full flex-col gap-6 rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xl backdrop-blur dark:border-white/15 dark:bg-white/10 lg:w-72 lg:sticky lg:top-8 lg:h-[calc(100vh-6rem)]">
@@ -33,9 +35,16 @@ export default function Sidebar({
           <p className="text-sm font-semibold uppercase tracking-[0.5em] text-slate-900 dark:text-white dark:drop-shadow-[0_0_12px_rgba(56,189,248,0.45)]">
             Viralify
           </p>
-          <p className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">
-            {userName}
-          </p>
+          <div className="mt-2 flex items-center gap-2">
+            <p className="text-lg font-semibold text-slate-900 dark:text-white">
+              {userName}
+            </p>
+            {isPro && (
+              <span className="rounded-full bg-indigo-500 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white">
+                Pro
+              </span>
+            )}
+          </div>
           <p className="text-xs text-slate-600 dark:text-white/60">
             {userEmail}
           </p>
