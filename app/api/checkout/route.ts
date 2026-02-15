@@ -11,10 +11,17 @@ export async function POST(request: Request) {
   }
 
   const secretKey = process.env.STRIPE_SECRET_KEY;
-  const baseUrl = process.env.NEXTAUTH_URL ?? "";
+  const baseUrl = process.env.NEXTAUTH_URL ?? request.headers.get("origin") ?? "";
   const { priceId } = await request.json().catch(() => ({ priceId: "" }));
 
-  if (!secretKey || !baseUrl || !priceId) {
+  if (!priceId) {
+    return NextResponse.json(
+      { error: "Missing priceId" },
+      { status: 400 }
+    );
+  }
+
+  if (!secretKey || !baseUrl) {
     return NextResponse.json(
       { error: "Stripe is not configured" },
       { status: 500 }

@@ -78,9 +78,11 @@ export default function DashboardClient({
       }
       window.location.href = data.url;
     } catch (err) {
-      setUpgradeError(
-        "No se pudo iniciar Stripe Checkout. Inténtalo nuevamente."
-      );
+      const message =
+        err instanceof Error
+          ? err.message
+          : "No se pudo iniciar Stripe Checkout. Inténtalo nuevamente.";
+      setUpgradeError(message);
     } finally {
       setIsUpgrading(false);
     }
