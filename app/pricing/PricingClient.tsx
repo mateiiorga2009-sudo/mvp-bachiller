@@ -10,7 +10,7 @@ export default function PricingClient() {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("/api/stripe/checkout", { method: "POST" });
+      const response = await fetch("/api/checkout", { method: "POST" });
       const data = (await response.json()) as { url?: string; error?: string };
       if (!response.ok || !data.url) {
         throw new Error(data.error ?? "No se pudo iniciar el pago.");
@@ -30,8 +30,7 @@ export default function PricingClient() {
           Free
         </h3>
         <p className="mt-2 text-sm text-slate-600 dark:text-white/70">
-          Free es genial para probar, pero algunas funciones avanzadas solo
-          están en Pro.
+          Prueba gratis con limitaciones, Pro desbloquea todo.
         </p>
         <ol className="mt-4 space-y-3 text-sm text-slate-600 dark:text-white/70">
           <li className="flex items-start gap-3">
@@ -62,7 +61,7 @@ export default function PricingClient() {
         </div>
         <h3 className="text-xl font-semibold text-white">Pro</h3>
         <p className="mt-2 text-sm text-white/80">
-          Pro: desbloquea todo y publica automáticamente tus vídeos virales.
+          Desbloquea todos los vídeos, sin watermark y publicación automática.
         </p>
         <ol className="mt-4 space-y-3 text-sm text-white/85">
           <li className="flex items-start gap-3">

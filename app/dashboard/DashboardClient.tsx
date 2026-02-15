@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import DashboardHeader from "./components/DashboardHeader";
 import GenerateModal from "./components/GenerateModal";
@@ -25,6 +25,7 @@ export default function DashboardClient({
   performance
 }: DashboardClientProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isGenerateOpen, setIsGenerateOpen] = useState(false);
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
   const [hasConnectedChannel, setHasConnectedChannel] = useState(false);
@@ -36,6 +37,14 @@ export default function DashboardClient({
     const proStored = window.localStorage.getItem("isPro");
     setIsPro(proStored === "true");
   }, []);
+
+  useEffect(() => {
+    if (searchParams.get("success") === "true") {
+      window.localStorage.setItem("isPro", "true");
+      window.localStorage.setItem("stripeCustomerId", "mock_customer_id");
+      setIsPro(true);
+    }
+  }, [searchParams]);
 
   const actions = [
     { title: "Analizar nuevo video", desc: "Pega un link y detecta clips." },
