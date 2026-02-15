@@ -12,21 +12,43 @@ export default async function ConnectPage() {
   }
 
   return (
-    <section className="space-y-8 animate-panel-in">
-      <header className="rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-xl backdrop-blur dark:border-white/15 dark:bg-white/10">
-        <h1 className="text-3xl font-semibold text-slate-900 dark:text-white">
+    <section className="space-y-10 animate-panel-in">
+      <header className="rounded-3xl border border-slate-200/80 bg-white/90 p-8 shadow-2xl backdrop-blur-xl dark:border-white/20 dark:bg-white/10">
+        <p className="text-xs uppercase tracking-[0.35em] text-slate-500 dark:text-white/60">
           Conectar canales
+        </p>
+        <h1 className="mt-3 text-3xl font-semibold text-slate-900 md:text-4xl dark:text-white">
+          Activa tu flujo automático de publicación
         </h1>
         <p className="mt-2 text-sm text-slate-600 dark:text-white/70">
-          Vincula tus cuentas para activar el flujo automático.
+          Vincula tus cuentas para sincronizar métricas, clips y publicación en
+          un solo lugar.
         </p>
       </header>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        {[
+          "Conecta YouTube o TikTok",
+          "Analiza tus videos",
+          "Publica clips automáticamente"
+        ].map((item, index) => (
+          <div
+            key={item}
+            className="rounded-2xl border border-slate-200/80 bg-white/90 px-4 py-3 text-sm text-slate-600 shadow-lg backdrop-blur-xl dark:border-white/20 dark:bg-white/10 dark:text-white/70"
+          >
+            <span className="mr-2 text-slate-500 dark:text-white/60">
+              0{index + 1}
+            </span>
+            {item}
+          </div>
+        ))}
+      </div>
 
       <ConnectClient />
 
       <Link
         href="/dashboard"
-        className="inline-flex rounded-2xl border border-slate-200/80 bg-white px-4 py-2 text-sm text-slate-700 transition hover:border-slate-300 dark:border-white/20 dark:bg-white/5 dark:text-white/80 dark:hover:border-white/40"
+        className="inline-flex rounded-2xl border border-slate-200/80 bg-white px-4 py-2 text-sm text-slate-700 transition hover:border-slate-300 dark:border-white/20 dark:bg-white/10 dark:text-white/80 dark:hover:border-white/40"
       >
         Volver al dashboard
       </Link>
