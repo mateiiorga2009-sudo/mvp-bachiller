@@ -1,11 +1,13 @@
 type DashboardHeaderProps = {
   onGenerate: () => void;
   onViewReport: () => void;
+  hasConnectedChannel: boolean;
 };
 
 export default function DashboardHeader({
   onGenerate,
-  onViewReport
+  onViewReport,
+  hasConnectedChannel
 }: DashboardHeaderProps) {
   return (
     <header className="rounded-3xl border border-slate-200/80 bg-gradient-to-br from-white via-white/80 to-white/60 p-6 shadow-2xl dark:border-white/15 dark:from-white/10 dark:via-white/5 dark:to-transparent">
@@ -30,12 +32,19 @@ export default function DashboardHeader({
           </button>
           <button
             onClick={onGenerate}
-            className="rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-xl transition hover:scale-[1.02]"
+            disabled={!hasConnectedChannel}
+            className="rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-xl transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Generar clips virales
+            Subir vídeo para generar clips
           </button>
         </div>
       </div>
+      {!hasConnectedChannel && (
+        <p className="mt-4 text-xs text-slate-600 dark:text-white/60">
+          Conecta al menos un canal para generar y publicar clips
+          automáticamente.
+        </p>
+      )}
     </header>
   );
 }

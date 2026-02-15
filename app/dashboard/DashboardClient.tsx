@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardHeader from "./components/DashboardHeader";
 import GenerateModal from "./components/GenerateModal";
 import PerformanceChart from "./components/PerformanceChart";
@@ -25,6 +25,12 @@ export default function DashboardClient({
 }: DashboardClientProps) {
   const router = useRouter();
   const [isGenerateOpen, setIsGenerateOpen] = useState(false);
+  const [hasConnectedChannel, setHasConnectedChannel] = useState(false);
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem("hasConnectedChannel");
+    setHasConnectedChannel(stored === "true");
+  }, []);
 
   const actions = [
     { title: "Analizar nuevo video", desc: "Pega un link y detecta clips." },
@@ -42,13 +48,47 @@ export default function DashboardClient({
         userName={userName}
         userEmail={userEmail}
         onNavigate={navigate}
-        onGenerate={() => setIsGenerateOpen(true)}
+        onGenerate={() => hasConnectedChannel && setIsGenerateOpen(true)}
+        hasConnectedChannel={hasConnectedChannel}
       />
 
       <main className="flex-1 space-y-8 lg:pt-2 animate-panel-in">
+        <section className="rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xl backdrop-blur dark:border-white/15 dark:bg-white/10">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-[0.35em] text-slate-500 dark:text-white/60">
+                Canales conectados
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold text-slate-900 dark:text-white">
+                Conecta tus canales para activar el flujo viral
+              </h2>
+              <p className="mt-2 text-sm text-slate-600 dark:text-white/70">
+                {hasConnectedChannel
+                  ? "Tienes al menos un canal conectado (simulado)."
+                  : "Conecta al menos un canal para generar y publicar clips automáticamente."}
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <button
+                onClick={() => navigate("/connect")}
+                className="rounded-2xl border border-slate-200/80 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 dark:border-white/20 dark:bg-white/5 dark:text-white/80 dark:hover:border-white/40"
+              >
+                Conectar YouTube
+              </button>
+              <button
+                onClick={() => navigate("/connect")}
+                className="rounded-2xl border border-slate-200/80 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 dark:border-white/20 dark:bg-white/5 dark:text-white/80 dark:hover:border-white/40"
+              >
+                Conectar TikTok
+              </button>
+            </div>
+          </div>
+        </section>
+
         <DashboardHeader
-          onGenerate={() => setIsGenerateOpen(true)}
+          onGenerate={() => hasConnectedChannel && setIsGenerateOpen(true)}
           onViewReport={() => navigate("/library")}
+          hasConnectedChannel={hasConnectedChannel}
         />
         <StatsGrid stats={stats} />
 
@@ -60,7 +100,7 @@ export default function DashboardClient({
           />
         </section>
 
-        <PrimaryCta onConnect={() => navigate("/generate")} />
+        <PrimaryCta onConnect={() => navigate("/connect")} />
       </main>
 
       <GenerateModal

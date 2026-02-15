@@ -8,6 +8,7 @@ type SidebarProps = {
   userEmail: string;
   onNavigate: (path: string) => void;
   onGenerate: () => void;
+  hasConnectedChannel: boolean;
 };
 
 const navItems = [
@@ -22,7 +23,8 @@ export default function Sidebar({
   userName,
   userEmail,
   onNavigate,
-  onGenerate
+  onGenerate,
+  hasConnectedChannel
 }: SidebarProps) {
   return (
     <aside className="flex w-full flex-col gap-6 rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-2xl backdrop-blur dark:border-white/15 dark:bg-white/10 lg:w-72 lg:sticky lg:top-8 lg:h-[calc(100vh-6rem)]">
@@ -63,10 +65,17 @@ export default function Sidebar({
       <div className="mt-auto space-y-3">
         <button
           onClick={onGenerate}
-          className="w-full rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:scale-[1.02]"
+          disabled={!hasConnectedChannel}
+          className="w-full rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Nuevo análisis
+          Subir vídeo para generar clips
         </button>
+        {!hasConnectedChannel && (
+          <p className="text-xs text-slate-600 dark:text-white/60">
+            Conecta al menos un canal para generar y publicar clips
+            automáticamente.
+          </p>
+        )}
         <LogoutButton />
       </div>
     </aside>
