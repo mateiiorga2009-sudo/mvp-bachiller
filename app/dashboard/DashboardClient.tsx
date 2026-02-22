@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { signIn } from "next-auth/react";
 import DashboardHeader from "./components/DashboardHeader";
 import GenerateModal from "./components/GenerateModal";
 import PerformanceChart from "./components/PerformanceChart";
@@ -32,12 +33,20 @@ export default function DashboardClient({
   const [isPro, setIsPro] = useState(false);
   const [isUpgrading, setIsUpgrading] = useState(false);
   const [upgradeError, setUpgradeError] = useState("");
+  const [isYoutubeConnected, setIsYoutubeConnected] = useState(false);
+  const [isTikTokConnected, setIsTikTokConnected] = useState(false);
 
   useEffect(() => {
     const stored = window.localStorage.getItem("hasConnectedChannel");
     setHasConnectedChannel(stored === "true");
     const proStored = window.localStorage.getItem("isPro");
     setIsPro(proStored === "true");
+    setIsYoutubeConnected(
+      window.localStorage.getItem("connectedYouTube") === "true"
+    );
+    setIsTikTokConnected(
+      window.localStorage.getItem("connectedTikTok") === "true"
+    );
   }, []);
 
   useEffect(() => {
@@ -56,6 +65,22 @@ export default function DashboardClient({
 
   const navigate = (path: string) => {
     router.push(path);
+  };
+
+  const handleConnectYouTube = async () => {
+    window.localStorage.setItem("connectedYouTube", "true");
+    window.localStorage.setItem("hasConnectedChannel", "true");
+    setIsYoutubeConnected(true);
+    setHasConnectedChannel(true);
+    await signIn("google", { callbackUrl: "/dashboard" });
+  };
+
+  const handleConnectTikTok = () => {
+    window.localStorage.setItem("connectedTikTok", "true");
+    window.localStorage.setItem("hasConnectedChannel", "true");
+    setIsTikTokConnected(true);
+    setHasConnectedChannel(true);
+    window.location.href = "/api/oauth/tiktok";
   };
 
   const handleUpgrade = async () => {
@@ -108,10 +133,20 @@ export default function DashboardClient({
 
           <div className="grid gap-6 lg:grid-cols-2">
             {[
-              { name: "YouTube", icon: "▶️" },
-              { name: "TikTok", icon: "🎵" }
+              {
+                name: "YouTube",
+                icon: "▶️",
+                isConnected: isYoutubeConnected,
+                onConnect: handleConnectYouTube
+              },
+              {
+                name: "TikTok",
+                icon: "🎵",
+                isConnected: isTikTokConnected,
+                onConnect: handleConnectTikTok
+              }
             ].map((channel) => {
-              const isConnected = hasConnectedChannel;
+              const isConnected = channel.isConnected;
               return (
                 <div
                   key={channel.name}
@@ -147,10 +182,11 @@ export default function DashboardClient({
                       : "Conecta para habilitar análisis y publicación directa."}
                   </p>
                   <button
-                    onClick={() => navigate("/connect")}
-                    className="mt-6 w-full rounded-2xl border border-slate-200/80 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:border-white/40 dark:hover:bg-white/20"
+                    onClick={channel.onConnect}
+                    disabled={isConnected}
+                    className="mt-6 w-full rounded-2xl border border-slate-200/80 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:border-white/40 dark:hover:bg-white/20"
                   >
-                    {isConnected ? "Gestionar" : "Conectar"}
+                    {isConnected ? "Conectado" : "Conectar"}
                   </button>
                 </div>
               );
